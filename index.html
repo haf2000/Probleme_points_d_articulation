@@ -1,0 +1,484 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>TP 2 TPGO</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--         <link rel="icon" type="image/png" href="favicon.ico">
+ -->
+        <!--Google Font link-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+
+        <link rel="stylesheet" href="assets/css/slick.css">
+        <link rel="stylesheet" href="assets/css/slick-theme.css">
+        <link rel="stylesheet" href="assets/css/animate.css">
+        <link rel="stylesheet" href="assets/css/fonticons.css">
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+        <link rel="stylesheet" href="assets/css/bootstrap.css">
+        <link rel="stylesheet" href="assets/css/magnific-popup.css">
+        <link rel="stylesheet" href="assets/css/bootsnav.css">
+   
+
+        <!--For Plugins external css-->
+        <!--<link rel="stylesheet" href="assets/css/plugins.css" />-->
+
+        <!--Theme custom css -->
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!--<link rel="stylesheet" href="assets/css/colors/maron.css">-->
+
+        <!--Theme Responsive css-->
+        <link rel="stylesheet" href="assets/css/responsive.css" />
+   <!-- ********************************************************** -->
+<!-- ---------------------------NODE GRAPH CODE ---------------- -->
+    <style type="text/css">
+          #mynetwork {
+        width: 100%;
+        height: 400px;
+        border: 1px solid black;
+      }
+    </style>
+
+   <!--  <script
+      type="text/javascript"
+      src="../../../standalone/umd/vis-network.min.js"
+    ></script> -->
+
+    <script type="text/javascript">
+      var nodes, edges, network;
+
+      // convenience method to stringify a JSON object
+      function toJSON(obj) {
+        return JSON.stringify(obj, null, 4);
+      }
+    
+      function addNode() {
+        try {
+          nodes.add({
+            id: document.getElementById("node-id").value,
+            label: document.getElementById("node-label").value,
+          });
+        } catch (err) {
+         // alert(err);
+         alert("Vous ne pouvez pas ajouter ce noued.")
+        }
+      }
+
+      function updateNode() {
+        try {
+          nodes.update({
+            id: document.getElementById("node-id").value,
+            label: document.getElementById("node-label").value,
+          });
+        } catch (err) {
+          //alert(err);
+         alert("Vous ne pouvez pas modifier ce noeud.")
+
+        }
+      }
+      function removeNode() {
+        try {
+          nodes.remove({ id: document.getElementById("node-id").value });
+        } catch (err) {
+          //alert(err);
+      alert("Vous ne pouvez pas supprimer ce noeud.")
+
+        }
+      }
+
+      function addEdge() {
+        try {
+          edges.add({
+            id: document.getElementById("edge-id").value,
+            from: document.getElementById("edge-from").value,
+            to: document.getElementById("edge-to").value,
+          });
+        } catch (err) {
+          //alert(err);
+       alert("Vous ne pouvez pas ajouter cet arête.")
+
+        }
+      }
+      function updateEdge() {
+        try {
+          edges.update({
+            id: document.getElementById("edge-id").value,
+            from: document.getElementById("edge-from").value,
+            to: document.getElementById("edge-to").value,
+          });
+        } catch (err) {
+         // alert(err);
+    alert("Vous ne pouvez pas modifier cet arête.")
+
+        }
+      }
+      function removeEdge() {
+        try {
+          edges.remove({ id: document.getElementById("edge-id").value });
+        } catch (err) {
+         // alert(err);
+    alert("Vous ne pouvez pas supprimer cet arête.")
+        }
+      }
+
+      function draw() {
+        // create an array with nodes
+        nodes = new vis.DataSet();
+        nodes.add([
+          { id: "1", label: "Node 1" },
+          { id: "2", label: "Node 2" },
+          { id: "3", label: "Node 3" },
+          { id: "4", label: "Node 4" },
+          { id: "5", label: "Node 5" },
+        ]);
+    
+   
+        // create an array with edges
+        edges = new vis.DataSet();
+        edges.add([
+          { id: "1", from: "1", to: "2" },
+          { id: "2", from: "1", to: "3" },
+          { id: "3", from: "2", to: "4" },
+          { id: "4", from: "2", to: "5" },
+        ]);
+        // create a network
+        var container = document.getElementById("mynetwork");
+        var data = {
+          nodes: nodes,
+          edges: edges,
+        };
+        var options = {
+    edges: {
+      width: 2,
+      style: 'arrow',
+      color: 'gray'
+    },
+    nodes: {
+      // default for all nodes
+      fontFace: 'Montserrat',
+      shape: 'circle',
+      color: {
+        border: 'orange',
+        background: 'yellow',
+        highlight: {
+          border: 'darkorange',
+          background: 'gold'
+        }
+      }
+    },
+    physics: {barnesHut:{springLength:400}}, // this is the correct way to set the length of the springs
+
+     };
+        network = new vis.Network(container, data, options);
+
+      }
+ 
+    </script>
+    </head>
+
+    <body data-spy="scroll" data-target=".navbar-collapse" onload="draw();">
+
+
+        <!-- Preloader -->
+        <div id="loading">
+            <div id="loading-center">
+                <div id="loading-center-absolute">
+                    <div class="object" id="object_one"></div>
+                    <div class="object" id="object_two"></div>
+                    <div class="object" id="object_three"></div>
+                    <div class="object" id="object_four"></div>
+                </div>
+            </div>
+        </div><!--End off Preloader -->
+
+
+        <div class="culmn">
+
+            <!--Home Sections-->
+
+            <section id="hello" class="home bg-mega">
+            
+                <div class="container">
+                    <div class="row">
+                        <div class="main_home">
+                            <div class="home_text">
+                                <h1 class="text-white" style="font-family: 'Montserrat';">Problème : <br />Les points d'articulation</h1>
+                                <h4 class="text-white" style="font-size: 19px;font-family: 'Montserrat';font-weight: lighter;">Un point d’articulation d’un graphe est un sommet tel que si on l’enlève, on augmente le nombre de composantes connexes.</h4>
+                            </div>
+
+                            <div class="home_btns m-top-40">
+                                <a href="#cont" class="btn btn-primary m-top-20">Commençons maintenant!</a>
+                            </div>
+
+                        </div>
+                    </div><!--End off row-->
+                </div><!--End off container -->
+            </section> <!--End off Home Sections-->
+
+<!-- ************************************************************************* -->
+<!-- ************************************************************************* -->
+<!-- ************************************************************************* -->
+            <!--About Sections-->
+            <section id="cont" class="about roomy-100">
+                <div class="container">
+       <h1 class="text-primary" style="font-family: 'Montserrat';text-align: center;font-weight: bold;">Solution du problème des points d'articulation</h1>
+      <br>
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <h4 style="font-family: 'Montserrat';text-align: center;">Opérations sur les noeuds</h4>
+          <table class="table">
+            <tr>
+              <td></td>
+              <td><label for="node-id">Id : </label></td>
+              <td><input class="form-control" id="node-id" type="text" value="" /></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><label for="node-label">Label : </label></td>
+              <td><input class="form-control" id="node-label" type="text" value="" /></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td style="font-weight: bold;">Opération : </td>
+              <td>
+                <button class="btn btn-primary" id="node-add" onclick="addNode();">Ajouter</button>
+                <button class="btn btn-primary" id="node-update" onclick="updateNode();">Modifier</button>
+                <button class="btn btn-primary" id="node-remove" onclick="removeNode();">Supprimer</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-lg-6">
+          <h4 style="font-family: 'Montserrat';text-align: center;">Opérations sur les arêtes</h4>
+          <table class="table">
+            <tr>
+              <td></td>
+              <td><label for="edge-id">Id : </label></td>
+              <td><input class="form-control" id="edge-id" type="text" value="" /></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><label for="edge-from">De : </label></td>
+              <td><input class="form-control" id="edge-from" type="text" value="" /></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><label for="edge-to">A : </label></td>
+              <td><input class="form-control" id="edge-to" type="text" value="" /></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td style="font-weight: bold;">Action</td>
+              <td>
+                <button class="btn btn-primary" id="edge-add" onclick="addEdge();">Ajouter</button>
+                <button class="btn btn-primary" id="edge-update" onclick="updateEdge();">Modifier</button>
+                <button class="btn btn-primary" id="edge-remove" onclick="removeEdge();">Supprimer</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+     <div class="row justify-content-center">
+      <div class="col-lg-1"></div>
+       <div class="col-lg-10 justify-content-center">
+         <h2 style="font-family: 'Montserrat';font-weight: bold;color:rgba(0,0,0,0.8);">Le graphe</h2>
+          <div id="mynetwork"></div>
+       </div>
+            <div class="col-lg-1"></div>
+
+     </div>
+   <br>
+     <div class="row justify-content-center">
+          <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <a class="btn btn-lg btn-outline-light btn-success" id="articulation">Voir les points d'articulations</a>
+            </div>
+            <div class="col-md-4"></div>
+     </div>
+  
+                </div>
+            </section> 
+            <!--End off About section -->
+<!-- ************************************************************************* -->
+<!-- ************************************************************************* -->
+<!-- ************************************************************************* -->
+            <!--Contact Us Section-->
+            <section id="contact" class="contact bg-mega fix" style="background-color: #d14149;">
+                <div class="container">
+                    <div class="row">
+                        <div class="main_contact roomy-100 text-white">
+                            
+                                <div class="rage_widget">
+                                    <div class="widget_head">
+
+                                        <h2 class="text-white">Travail fait par le binôme :</h2>
+                                        <div class="separator_small"></div>
+                                    </div>
+
+                                    <h3 class="text-white">Bouzaouia Hafida Ines - 2cssiq1 </h3>
+                                    <h3 class="text-white">Bencheikh Chaïma Maroua - 2cssiq1 </h3>
+                                </div>
+                          
+                    
+                        </div>
+                    </div><!--End off row -->
+                </div><!--End off container -->
+            </section><!--End off Contact Section-->
+
+
+            <!-- scroll up-->
+            <div class="scrollup">
+                <a href="#"><i class="fa fa-chevron-up"></i></a>
+            </div><!-- End off scroll up -->
+
+        </div>
+        <script type="text/javascript">
+           el = document.getElementById("articulation");
+if(el){
+  el.addEventListener('click', tarjan, false);
+ }
+
+
+        class Graph {
+        constructor(vertices) {
+            this.time = 0;
+            this.v = vertices;
+            this.adj = new Array(this.v).fill(null).map(() => []);
+        }
+        addEdge(v, w) {
+            this.adj[v].push(w)
+            this.adj[w].push(v)
+        }
+        APUtil(u, visited, disc, low, parent, ap) {
+            var children = 0;
+            visited[u] = true;
+
+            disc[u] = this.time;
+            low[u] = this.time;
+            this.time += 1;
+            // disc[u] = low[u] = ++this.time; 
+
+            var tab = this.adj[u]
+            for (var i = 0; i < tab.length; i++) {
+                var v = tab[i];
+                if (!visited[v]) {
+                    children++;
+                    parent[v] = u;
+                    this.APUtil(v, visited, disc, low, parent, ap);
+
+
+                    low[u] = Math.min(low[u], low[v]);
+
+
+                    if ((parent[u] == -1) && (children > 1)) {
+                        ap[u] = true;
+                    }
+
+
+
+                    if ((parent[u] != -1) && (low[v] >= disc[u])) {
+                        ap[u] = true;
+                    }
+
+
+
+                }
+                else if (v != parent[u]) {
+                    low[u] = Math.min(low[u], disc[v]);
+
+                }
+            }
+        }
+        AP(noeuds,aretes) {
+
+            let visited = Array(this.v).fill(null).map(() => false)
+            let disc = Array(this.v).fill(null).map(() => 0)
+            let low = Array(this.v).fill(null).map(() => 0)
+            let parent = Array(this.v).fill(null).map(() => -1)
+            let ap = Array(this.v).fill(null).map(() => false)
+
+            for (var i = 0; i < this.v; i++) {
+                if (visited[i] == false)
+                    this.APUtil(i, visited, disc, low, parent, ap);
+            }
+
+
+            for (var j = 1; j <= this.v; j++) {
+                nodes.update({ id: j })
+
+                if (ap[j] == true) {
+                  nodes.update({ id: j, color: { background: '#eb4034' } })
+                }
+
+            }
+
+
+        }
+    }
+
+
+
+
+     function tarjan(){
+    var aretes,noeuds;
+
+           console.log("coucou beauty!");
+          console.log(nodes);
+        console.log(edges);
+        aretes = edges;
+        noeuds  = nodes;
+       var nombre_noeuds = noeuds.length;
+       var nombre_aretes = edges.length;
+       console.log(nombre_aretes);
+      console.log(nombre_noeuds);
+        console.log("Points d'articulation dans le graphe")
+        g1 = new Graph(nombre_noeuds)
+        aretes.forEach(element => {
+            g1.addEdge(element.id, element.from, element.to)
+
+        })
+        console.log(g1.adj);
+        g1.AP(noeuds,aretes);
+         }
+        </script>
+
+        <!-- <script type="text/javascript">
+            //--------------------------On commence lmse9i--------------------
+    el = document.getElementById("articulation");
+if(el){
+  el.addEventListener('click', tarjan, false);
+ }  
+        </script>
+ -->
+            <!-- JS includes -->
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.js"></script>
+ <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+        crossorigin="anonymous"></script> -->
+         
+         <script type="text/javascript" src="https://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=dmgZKIvX-HmofP6AAJiMAXoz1F9h8RO9Y6bLg5MfsN3mIic8byA8NzqaJcy3PSCjKbRyquwND6f5mPpMqtCoGDqqF9U8cuXd7K3A18ahjbxgGPLq2G3cP-BzOAd-vELI" charset="UTF-8"></script>
+
+        <script src="assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+            <script src="assets/js/vendor/jquery-1.11.2.min.js"></script>
+            <script src="assets/js/vendor/bootstrap.min.js"></script>
+            <script src="assets/js/jquery.magnific-popup.js"></script>
+            <script src="assets/js/jquery.easing.1.3.js"></script>
+            <script src="assets/js/slick.min.js"></script>
+            <script src="assets/js/jquery.collapse.js"></script>
+            <script src="assets/js/bootsnav.js"></script>
+            <script src="assets/js/plugins.js"></script>
+            <script src="assets/js/main.js"></script>
+
+    </body>
+</html>

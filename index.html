@@ -130,23 +130,23 @@
       function draw() {
         // create an array with nodes
         nodes = new vis.DataSet();
-        nodes.add([
-          { id: "1", label: "Node 1" },
-          { id: "2", label: "Node 2" },
-          { id: "3", label: "Node 3" },
-          { id: "4", label: "Node 4" },
-          { id: "5", label: "Node 5" },
-        ]);
+        // nodes.add([
+        //   { id: "1", label: "Node 1" },
+        //   { id: "2", label: "Node 2" },
+        //   { id: "3", label: "Node 3" },
+        //   { id: "4", label: "Node 4" },
+        //   { id: "5", label: "Node 5" },
+        // ]);
     
    
         // create an array with edges
         edges = new vis.DataSet();
-        edges.add([
-          { id: "1", from: "1", to: "2" },
-          { id: "2", from: "1", to: "3" },
-          { id: "3", from: "2", to: "4" },
-          { id: "4", from: "2", to: "5" },
-        ]);
+        // edges.add([
+        //   { id: "1", from: "1", to: "2" },
+        //   { id: "2", from: "1", to: "3" },
+        //   { id: "3", from: "2", to: "4" },
+        //   { id: "4", from: "2", to: "5" },
+        // ]);
         // create a network
         var container = document.getElementById("mynetwork");
         var data = {
@@ -353,9 +353,13 @@ if(el){
             this.adj = new Array(this.v).fill(null).map(() => []);
         }
         addEdge(v, w) {
-            this.adj[v].push(w)
-            this.adj[w].push(v)
+            this.adj[v-1].push(w)
+            this.adj[w-1].push(v)
         }
+        get_ADJ(){
+          return this.adj;
+        }
+
         APUtil(u, visited, disc, low, parent, ap) {
             var children = 0;
             visited[u] = true;
@@ -363,18 +367,17 @@ if(el){
             disc[u] = this.time;
             low[u] = this.time;
             this.time += 1;
-            // disc[u] = low[u] = ++this.time; 
-
+          // On récupère les adjacents du noeud u et on les parcourt 1 par à 1
             var tab = this.adj[u]
-            for (var i = 0; i < tab.length; i++) {
+            for (var i = 0; i < tab.length; i++) { 
                 var v = tab[i];
-                if (!visited[v]) {
+                if (!visited[v-1]) {
                     children++;
-                    parent[v] = u;
-                    this.APUtil(v, visited, disc, low, parent, ap);
+                    parent[v-1] = u;
+                    this.APUtil(v-1, visited, disc, low, parent, ap);
 
 
-                    low[u] = Math.min(low[u], low[v]);
+                    low[u] = Math.min(low[u], low[v-1]);
 
 
                     if ((parent[u] == -1) && (children > 1)) {
@@ -383,15 +386,15 @@ if(el){
 
 
 
-                    if ((parent[u] != -1) && (low[v] >= disc[u])) {
+                    if ((parent[u] != -1) && (low[v-1] >= disc[u])) {
                         ap[u] = true;
                     }
 
 
 
                 }
-                else if (v != parent[u]) {
-                    low[u] = Math.min(low[u], disc[v]);
+                else if ((v-1) != parent[u]) {
+                    low[u] = Math.min(low[u], disc[v-1]);
 
                 }
             }
@@ -410,11 +413,11 @@ if(el){
             }
 
 
-            for (var j = 1; j <= this.v; j++) {
-                nodes.update({ id: j })
+            for (var j = 0; j < this.v; j++) {
+                nodes.update({ id: j+1, color: { background: 'yellow' } })
 
                 if (ap[j] == true) {
-                  nodes.update({ id: j, color: { background: '#eb4034' } })
+                  nodes.update({ id: j+1, color: { background: '#eb4034' } })
                 }
 
             }
@@ -439,12 +442,12 @@ if(el){
        console.log(nombre_aretes);
       console.log(nombre_noeuds);
         console.log("Points d'articulation dans le graphe")
-        g1 = new Graph(nombre_noeuds)
-        aretes.forEach(element => {
-            g1.addEdge(element.id, element.from, element.to)
+        g1 = new Graph(nombre_noeuds);
+        aretes.forEach(element => {         
+            g1.addEdge(element.from, element.to)
 
         })
-        console.log(g1.adj);
+        console.log(g1.get_ADJ());
         g1.AP(noeuds,aretes);
          }
         </script>
